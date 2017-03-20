@@ -22,7 +22,7 @@ float Ki=0; //Initial Integral Gain
 float Kd=0; //Initial Differential Gain 
 
 // Specify the links and initial tuning parameters
-PID myPID(&Input, &Output, &Setpoint,Kp,Ki,Kd, DIRECT);
+contr_motor Motor1;
 
 // TimestampLED_PIDcontroller_2.ino:156:32: error: sufixo "Output" inválido em constante flutuanteLED_PIDcontroller_2.ino:156:32: error: sufixo "Output" inválido em constante flutuante
 unsigned long serialTime; //this will help us know when to talk with processing
@@ -35,12 +35,13 @@ void setup()
 {
   Serial.begin(9600); //Start a serial session
   lastMessage = millis(); // timestamp
+  Motor1.config();
 }
 
 
 void loop(){
 
-  
+  Motor1.executa();
 
   
   now = millis(); // Keep track of time
@@ -122,13 +123,13 @@ void SerialReceive()
     p = double(foo.asFloat[3]);           //
     i = double(foo.asFloat[4]);           //
     d = double(foo.asFloat[5]);           //
-    myPID.SetTunings(p, i, d);            //
+    Motor1.setTuningsPID(p, i, d);            //
     
-    if(Auto_Man==0) myPID.SetMode(MANUAL);// * set the controller mode
-    else myPID.SetMode(AUTOMATIC);             //
+    if(Auto_Man==0) Motor1.setModePID(MANUAL);// * set the controller mode
+    else Motor1.setModePID(AUTOMATIC);             //
     
-    if(Direct_Reverse==0) myPID.SetControllerDirection(DIRECT);// * set the controller Direction
-    else myPID.SetControllerDirection(REVERSE);          //
+    if(Direct_Reverse==0) Motor1.setControllerDirectionPID(DIRECT);// * set the controller Direction
+    else Motor1.setControllerDirectionPID(REVERSE);          //
   }
   Serial.flush();                         // * clear any random data from the serial buffer
 }
@@ -147,15 +148,15 @@ void SerialSend()
   Serial.print(((Output/100.0)*127.0+127));   
 //  Serial.print(Output);   
   Serial.print(" ");
-  Serial.print(myPID.GetKp());   
+  Serial.print(Motor1.getKpPID());   
   Serial.print(" ");
-  Serial.print(myPID.GetKi());   
+  Serial.print(Motor1.getKiPID());   
   Serial.print(" ");
-  Serial.print(myPID.GetKd());   
+  Serial.print(Motor1.getKdPID());   
   Serial.print(" ");
-  if(myPID.GetMode()==AUTOMATIC) Serial.print("Automatic");
+  if(Motor1.getModePID()==AUTOMATIC) Serial.print("Automatic");
   else Serial.print("Manual");  
   Serial.print(" ");
-  if(myPID.GetDirection()==DIRECT) Serial.println("Direct");
+  if(Motor1.getDirectionPID()==DIRECT) Serial.println("Direct");
   else Serial.println("Reverse");
 }
