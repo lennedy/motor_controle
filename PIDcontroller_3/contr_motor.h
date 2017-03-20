@@ -32,5 +32,15 @@ class contr_motor{
   inline double ler_setPoint(){return ler_analogico(setPointPin);}
   inline double ler_analogico(int pino){return 100*(analogRead(pino)/1023.0);}
   void escr_analogico(int pino, double valor);
+  
+  inline void setModePID(int mode){myPID.SetMode(mode);}
+  inline void setControllerDirectionPID(int direcao){myPID.SetControllerDirection(direcao);}
+  inline void setTuningsPID(float p, float i, float d){myPID.SetTunings(p, i, d);}
+  inline float getKpPID(){return myPID.GetKp();}
+  inline float getKiPID(){return myPID.GetKi();}
+  inline float getKdPID(){return myPID.GetKd();}
+  inline int getModePID(){myPID.GetMode();}
+  inline int getDirectionPID(){myPID.GetDirection();}
+  
 
 };
