@@ -13,17 +13,8 @@
 #include <PID_v1.h>
 #include <math.h>
 
-#define GO_AHEAD 0
-#define GO_BACK  1
-
 //Define Variables we'll be connecting to
 double Setpoint, Input, Output; // these are just variables for storing values
-double Output_temp;
-int inputPin = 0; // Photo resistor input
-int outputPin = 3; // LED output
-int signalPin = 4; // Pin to inform the way of moviment
-int pot = 1; // Potentiometer input
-
 
 // Tuning parameters
 float Kp=2.0; //Initial Proportional Gain 
@@ -35,7 +26,6 @@ PID myPID(&Input, &Output, &Setpoint,Kp,Ki,Kd, DIRECT);
 
 // TimestampLED_PIDcontroller_2.ino:156:32: error: sufixo "Output" inválido em constante flutuanteLED_PIDcontroller_2.ino:156:32: error: sufixo "Output" inválido em constante flutuante
 unsigned long serialTime; //this will help us know when to talk with processing
-const int sampleRate = 1; // Variable that determines how fast our PID loop runs
 const long serialPing = 500; //This determines how often we ping our loop
 unsigned long now = 0; //This variable is used to keep track of time
 unsigned long lastMessage = 0; //This keeps track of when our loop last spoke to serial
@@ -43,34 +33,15 @@ unsigned long lastMessage = 0; //This keeps track of when our loop last spoke to
 
 void setup()
 {
-  pinMode(signalPin, OUTPUT);     
-  pinMode(13, OUTPUT);
-  digitalWrite(13,0);  
-  myPID.SetOutputLimits(-100, 100);	
-  Input = (analogRead(inputPin)/1023.0); // Read in light level
-  Setpoint = (analogRead(pot)/1023.0); // Read the SetPoint value from the potentiometer
-  
   Serial.begin(9600); //Start a serial session
-  myPID.SetMode(AUTOMATIC); // Turn on the PID loop as automatic control
-  myPID.SetSampleTime(sampleRate); // Sets the sample rate
   lastMessage = millis(); // timestamp
 }
 
 
 void loop(){
-  Input = 100*(analogRead(inputPin)/1023.0); // Read in light level
-  Setpoint = 100*(analogRead(pot)/1023.0); // Read our setpoint light Level from the potentiometer 
-  myPID.Compute(); // Run the PID loop
+
   
-  Output_temp = 255*(Output/100.0);
-  if (Output_temp >= 0){
-    analogWrite(outputPin, Output_temp); // Write out the output from the PID loop to our LED pin
-    digitalWrite(signalPin, GO_AHEAD);
-  }
-  else{
-    analogWrite(outputPin, fabs(Output_temp));
-    digitalWrite(signalPin, GO_BACK);       
-  }
+
   
   now = millis(); // Keep track of time
   
