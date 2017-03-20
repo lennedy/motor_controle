@@ -14,8 +14,8 @@ class contr_motor{
   
   
   // Tuning parameters
-  float Kp=2.0; //Initial Proportional Gain 
-  float Ki=0; //Initial Integral Gain 
+  float Kp=3.0; //Initial Proportional Gain 
+  float Ki=2.9; //Initial Integral Gain 
   float Kd=0; //Initial Differential Gain 
   
   // Specify the links and initial tuning parameters
@@ -30,7 +30,7 @@ class contr_motor{
   
   inline double ler_entrada(){return ler_analogico(inputPin);}
   inline double ler_setPoint(){return ler_analogico(setPointPin);}
-  inline double ler_analogico(int pino){return 100*(analogRead(pino)/1023.0);}
+  inline double ler_analogico(const int pino){return 100*(analogRead(pino)/1023.0);}
   void escr_analogico(int pino, double valor);
   
   inline void setModePID(int mode){myPID.SetMode(mode);}
@@ -42,5 +42,9 @@ class contr_motor{
   inline int getModePID(){myPID.GetMode();}
   inline int getDirectionPID(){myPID.GetDirection();}
   
-
+  inline void setSetPoint(double sp){Setpoint = sp;}
+  inline void setOutput(double op){Output = op;}  
+  inline double getSetPoint(){return Setpoint;}
+  inline double getOutput(){return Output;}
+  inline double getInput(){return Input;}
 };
