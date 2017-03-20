@@ -14,7 +14,7 @@
 #include <math.h>
 
 //Define Variables we'll be connecting to
-double Setpoint, Input, Output; // these are just variables for storing values
+//double Setpoint, Input, Output; // these are just variables for storing values
 
 // Tuning parameters
 float Kp=2.0; //Initial Proportional Gain 
@@ -110,13 +110,13 @@ void SerialReceive()
   // read it into the system
   if(index==26  && (Auto_Man==0 || Auto_Man==1)&& (Direct_Reverse==0 || Direct_Reverse==1))
   {
-    Setpoint=double(foo.asFloat[0]);
+    Motor1.setSetPoint(double(foo.asFloat[0]));
     //Input=double(foo.asFloat[1]);       // * the user has the ability to send the 
                                           //   value of "Input"  in most cases (as 
                                           //   in this one) this is not needed.
     if(Auto_Man==0)                       // * only change the output if we are in 
     {                                     //   manual mode.  otherwise we'll get an
-      Output=double(foo.asFloat[2]);      //   output blip, then the controller will 
+      Motor1.setOutput(double(foo.asFloat[2]));      //   output blip, then the controller will 
     }                                     //   overwrite.
     
     double p, i, d;                       // * read in and set the controller tunings
@@ -141,11 +141,11 @@ void SerialReceive()
 void SerialSend()
 {
   Serial.print("PID ");
-  Serial.print(1024*(Setpoint/100.0));   
+  Serial.print(1024*(Motor1.getSetPoint()/100.0));   
   Serial.print(" ");
-  Serial.print(1024*(Input/100.0));   
+  Serial.print(1024*(Motor1.getInput()/100.0));   
   Serial.print(" ");
-  Serial.print(((Output/100.0)*127.0+127));   
+  Serial.print(((Motor1.getOutput()/100.0)*127.0+127));   
 //  Serial.print(Output);   
   Serial.print(" ");
   Serial.print(Motor1.getKpPID());   
