@@ -8,7 +8,7 @@
 #define GO_BACK  1
 
 contr_motor::contr_motor():myPID(&Input, &Output, &Setpoint,Kp,Ki,Kd, DIRECT){
-
+  Setpoint=50;
 }
 
 void contr_motor::config(){
@@ -23,6 +23,7 @@ void contr_motor::executa(){
   Input = ler_entrada();
   Setpoint = ler_setPoint();
   myPID.Compute(); // Run the PID loop
+  escr_analogico(outputPin, Output);
 }
 
 void contr_motor::escr_analogico(int pino, double valor){
