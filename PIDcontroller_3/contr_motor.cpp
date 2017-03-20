@@ -13,7 +13,6 @@ contr_motor::contr_motor():myPID(&Input, &Output, &Setpoint,Kp,Ki,Kd, DIRECT){
 
 void contr_motor::config(){
   pinMode(signalPin, OUTPUT);     
-  Serial.begin(9600); //Start a serial session  
   
   myPID.SetOutputLimits(-100, 100);
   myPID.SetMode(AUTOMATIC); // Turn on the PID loop as automatic control
