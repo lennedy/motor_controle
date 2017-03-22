@@ -1,4 +1,3 @@
-
 #include "contr_motor.h"
 
 #include <math.h>
@@ -7,12 +6,16 @@
 #define GO_AHEAD 0
 #define GO_BACK  1
 
-contr_motor::contr_motor():myPID(&Input, &Output, &Setpoint,Kp,Ki,Kd, DIRECT){
+contr_motor::contr_motor(Encoder& e):
+myPID(&Input, &Output, &Setpoint,Kp,Ki,Kd, DIRECT),
+encoder(e)
+{
   Setpoint=50;
 }
 
 void contr_motor::config(){
-  pinMode(signalPin, OUTPUT);     
+  encoder.config();
+  //pinMode(signalPin, OUTPUT);     
   
   myPID.SetOutputLimits(-100, 100);
   myPID.SetMode(AUTOMATIC); // Turn on the PID loop as automatic control
@@ -23,7 +26,7 @@ void contr_motor::executa(){
   Input = ler_entrada();
   Setpoint = ler_setPoint();
   myPID.Compute(); // Run the PID loop
-  escr_analogico(outputPin, Output);
+  escr_analogico(outputPin, Output);  
 }
 
 void contr_motor::escr_analogico(int pino, double valor){
