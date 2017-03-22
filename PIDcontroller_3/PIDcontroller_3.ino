@@ -13,29 +13,33 @@
 #include <PID_v1.h>
 #include <math.h>
 
-//Define Variables we'll be connecting to
-//double Setpoint, Input, Output; // these are just variables for storing values
+#define PINO_ENCODER1_1 2 //interrupcao
+#define PINO_ENCODER1_2 5//
+#define PINO_PWM_SETPOINT_1 A0
+#define PINO_DIRECAO_SETPOINT_1 12
+#define PINO_PWM_OUTPUT_1 9
+#define PINO_DIRECAO_OUTPUT_1 8
 
-// Tuning parameters
-float Kp=2.0; //Initial Proportional Gain 
-float Ki=0; //Initial Integral Gain 
-float Kd=0; //Initial Differential Gain 
 
-// Specify the links and initial tuning parameters
-contr_motor Motor1;
+Encoder encoder1(PINO_ENCODER1_1,PINO_ENCODER1_2);
+contr_motor Motor1(encoder1);
 
 // TimestampLED_PIDcontroller_2.ino:156:32: error: sufixo "Output" inválido em constante flutuanteLED_PIDcontroller_2.ino:156:32: error: sufixo "Output" inválido em constante flutuante
 unsigned long serialTime; //this will help us know when to talk with processing
-const long serialPing = 500; //This determines how often we ping our loop
 unsigned long now = 0; //This variable is used to keep track of time
 unsigned long lastMessage = 0; //This keeps track of when our loop last spoke to serial
 
+void encoder1_interrupt(){
+  Motor1.calculapulso();
+}
 
 void setup()
 {
   Serial.begin(9600); //Start a serial session
   lastMessage = millis(); // timestamp
   Motor1.config();
+  
+  attachInterrupt(0, encoder1_interrupt, CHANGE);
 }
 
 
@@ -143,7 +147,8 @@ void SerialSend()
   Serial.print("PID ");
   Serial.print(1024*(Motor1.getSetPoint()/100.0));   
   Serial.print(" ");
-  Serial.print(1024*(Motor1.getInput()/100.0));   
+ // Serial.print(1024*(Motor1.getInput()/100.0));   
+ Serial.print((Motor1.getInput()));
   Serial.print(" ");
   Serial.print(((Motor1.getOutput()/100.0)*127.0+127));   
 //  Serial.print(Output);   
