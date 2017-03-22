@@ -8,7 +8,6 @@ class contr_motor{
 
   double Setpoint, Input, Output; // these are just variables for storing values
   
-  int inputPin = 0; // Photo resistor input
   int outputPin = 3; // LED output
   int signalPin = 4; // Pin to inform the way of moviment
   int setPointPin = 1; // Potentiometer input
@@ -32,7 +31,7 @@ class contr_motor{
   
   inline double ler_entrada(){
     encoder.calculaVelocidade(); 
-    return encoder.getVelocidade();//return ler_analogico(inputPin);
+    return encoder.getVelocidade();
   }
   inline double ler_setPoint(){return Setpoint;}
   inline double ler_analogico(const int pino){return 100*(analogRead(pino)/1023.0);}
