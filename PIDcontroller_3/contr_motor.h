@@ -2,6 +2,7 @@
 
 #include <Arduino.h>
 #include <PID_v1.h>
+#include "encoder.h"
 
 class contr_motor{
 
@@ -14,22 +15,26 @@ class contr_motor{
   
   
   // Tuning parameters
-  float Kp=3.0; //Initial Proportional Gain 
-  float Ki=2.9; //Initial Integral Gain 
+  float Kp=1.0; //Initial Proportional Gain 
+  float Ki=0; //Initial Integral Gain 
   float Kd=0; //Initial Differential Gain 
   
   // Specify the links and initial tuning parameters
   PID myPID;
+   Encoder encoder;
   
   const int sampleRate = 1; // Variable that determines how fast our PID loop runs
   
   public:
-  contr_motor();
+  contr_motor(Encoder& e);
   void config();
   void executa();
   
-  inline double ler_entrada(){return ler_analogico(inputPin);}
-  inline double ler_setPoint(){return ler_analogico(setPointPin);}
+  inline double ler_entrada(){
+    encoder.calculaVelocidade(); 
+    return encoder.getVelocidade();//return ler_analogico(inputPin);
+  }
+  inline double ler_setPoint(){return Setpoint;}
   inline double ler_analogico(const int pino){return 100*(analogRead(pino)/1023.0);}
   void escr_analogico(int pino, double valor);
   
@@ -47,4 +52,6 @@ class contr_motor{
   inline double getSetPoint(){return Setpoint;}
   inline double getOutput(){return Output;}
   inline double getInput(){return Input;}
+  
+  inline void calculapulso(){encoder.calculapulso();}
 };
