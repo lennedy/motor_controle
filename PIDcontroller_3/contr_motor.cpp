@@ -10,12 +10,12 @@ contr_motor::contr_motor(Encoder& e):
 myPID(&Input, &Output, &Setpoint,Kp,Ki,Kd, DIRECT),
 encoder(e)
 {
-  Setpoint=50;
+  Setpoint=10;
 }
 
 void contr_motor::config(){
-  encoder.config();
-  //pinMode(signalPin, OUTPUT);     
+  encoder.config();    
+  
   
   myPID.SetOutputLimits(-100, 100);
   myPID.SetMode(AUTOMATIC); // Turn on the PID loop as automatic control
@@ -40,4 +40,11 @@ void contr_motor::escr_analogico(int pino, double valor){
   else{
     digitalWrite(signalPin, GO_BACK);       
   }
+}
+
+void contr_motor::setPinos(int pwm_setpoint, int direcao_setpoint, int pwm_output, int direcao_output){
+  outputPin = pwm_output;
+  signalPin = direcao_output;
+  direcaoSetpointPin = direcao_setpoint;
+  pwmSetpointPin = pwm_setpoint;
 }

@@ -8,19 +8,22 @@ class contr_motor{
 
   double Setpoint, Input, Output; // these are just variables for storing values
   
-  int outputPin = 3; // LED output
-  int signalPin = 4; // Pin to inform the way of moviment
-  int setPointPin = 1; // Potentiometer input
+  //variaveis devem ser configuradas chamando a funcao setPinos()
+  int outputPin; // LED output
+  int signalPin; // Pin to inform the way of moviment
+  int direcaoSetpointPin;
+  int pwmSetpointPin;
+  
   
   
   // Tuning parameters
-  float Kp=1.0; //Initial Proportional Gain 
-  float Ki=0; //Initial Integral Gain 
+  float Kp=0.5; //Initial Proportional Gain 
+  float Ki=0.0; //Initial Integral Gain 
   float Kd=0; //Initial Differential Gain 
   
   // Specify the links and initial tuning parameters
   PID myPID;
-   Encoder encoder;
+  Encoder encoder;
   
   const int sampleRate = 1; // Variable that determines how fast our PID loop runs
   
@@ -53,4 +56,5 @@ class contr_motor{
   inline double getInput(){return Input;}
   
   inline void calculapulso(){encoder.calculapulso();}
+  void setPinos(int pwm_setpoint, int direcao_setpoint, int pwm_output, int direcao_output);
 };
