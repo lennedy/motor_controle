@@ -12,7 +12,7 @@ class Encoder{
   double velocidade=0; //velocidade em pusos/segundo
   unsigned long tempo_ant=0;
   long duracao_ant=0;
-  const int amostragem_vel=100; //tempo de amostragem em milesegundos 
+  const int amostragem_vel=10; //tempo de amostragem em milesegundos 
   
   public:
   inline void config(){pinMode(Encoder_C2, INPUT);}
@@ -22,6 +22,7 @@ class Encoder{
   inline void resetDuracao(){duracao=0;}
   inline long getDuracao(){return duracao;}
   inline boolean getDirecao(){return Direcao;}
+  //inline void setAmostragemVel(int amostragem){amostragem_vel = amostragem;}
   
   inline double getVelocidade(){return velocidade;}
   
