@@ -1,7 +1,7 @@
 
 
 #include <Arduino.h>
-#include <PID_v1.h>
+#include "PID_v1.h"
 #include "encoder.h"
 
 class contr_motor{
