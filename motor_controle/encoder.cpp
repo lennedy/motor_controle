@@ -1,8 +1,8 @@
 #include "encoder.h"
 
-Encoder::Encoder(byte pino_c1, byte pino_c2):
-Encoder_C1(pino_c1), 
-Encoder_C2(pino_c2)
+Encoder::Encoder(byte pino_interrupcao_c1, byte pino_sentido_c2):
+Encoder_C1(pino_interrupcao_c1), 
+Encoder_C2(pino_sentido_c2)
 {
   duracao=0;
 }
